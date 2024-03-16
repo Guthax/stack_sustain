@@ -1,0 +1,33 @@
+<!doctype html>
+<head>
+    <title>{% block title %}{% endblock %} - Flaskr</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <form method="post">
+        <label for="username">Display name</label>
+        <input name="username" id="username" type="text" required/>
+        <input type="submit" value="Check score">
+    </form>
+    <p>Welcome to StackSustain! </p>
+    <p>This site calculates your stack sustain score, a score which determines how active you have been in asking or answering questions, related to sustainability.</p>
+    {% if g.user_id %}
+    <h1>Youre current stack sustain score is: {{g.user_score}}!</h1>
+    <h1>Questions you asked</h1>
+    <ol>
+        {% for message in g.questions %}
+        <li><a href="{{message["link"]}}">{{ message["title"]}}</a></li>
+        {% endfor %}
+    </ol>
+    {% else %}
+      <br/>
+    {% endif %}
+
+
+    <h1>Questions you might answer to boost your score</h1>
+
+    {% for question in get_sustainability_questions() %}
+    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+    {% endfor %}
+</body>
+    </html>
