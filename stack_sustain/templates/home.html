@@ -4,18 +4,32 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <form method="post">
-        <label for="username">Display name</label>
-        <input name="username" id="username" type="text" required/>
-        <input type="submit" value="Check score">
-    </form>
     <p>Welcome to StackSustain! </p>
     <p>This site calculates your stack sustain score, a score which determines how active you have been in asking or answering questions, related to sustainability.</p>
-    {% if g.user_id %}
+    <p>Tags related to sustainability are: {{g.tags}}</p>
+    <p><b>Fill in your display name for the different stack exchange sites in the text fields below.</b></p>
+    <form method="post">
+        <table>
+            <tr>
+                <td><label for="username_so">Stack Overflow</label></td>
+                <td><input name="username_so" id="username_so" type="text"/></td>
+            </tr>
+            <tr>
+                <td><label for="username_su">Super User</label></td>
+                <td><input name="username_su" id="username_su" type="text"/></td>
+            </tr>
+            <tr>
+                <td><label for="username_sf">Server Fault</label></td>
+                <td><input name="username_sf" id="username_sf" type="text"/></td>
+            </tr>
+        </table>
+        <input type="submit" value="Check score">
+    </form>
+    {% if g.user_id_so or g.user_id_su or g.user_id_sf %}
     <h1>Youre current stack sustain score is: {{g.user_score}}!</h1>
     <h1>Questions you asked</h1>
     <ol>
-        {% for message in g.questions %}
+        {% for message in g.questions_so %}
         <li><a href="{{message["link"]}}">{{ message["title"]}}</a></li>
         {% endfor %}
     </ol>
@@ -26,7 +40,18 @@
 
     <h1>Questions you might answer to boost your score</h1>
 
-    {% for question in get_sustainability_questions() %}
+    <h2>Stack overflow:</h2>
+    {% for question in get_sustainability_questions("stackoverflow") %}
+    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+    {% endfor %}
+
+    <h2>SuperUser</h2>
+    {% for question in get_sustainability_questions("superuser") %}
+    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+    {% endfor %}
+
+    <h2>Server fault</h2>
+    {% for question in get_sustainability_questions("serverfault") %}
     <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
     {% endfor %}
 </body>
