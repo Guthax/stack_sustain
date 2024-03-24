@@ -2,12 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: verdana, serif;
 }
 
 body {
     padding: 2rem;
-    background-color: #212121;
-    color: whitesmoke;
+    background-color: #171717;
+    color: #ffeddb;
     /*min-height: 100vh;*/
     display: flex;
     flex-direction: column;
@@ -21,7 +22,6 @@ form {
 }
 
 label {
-    font-family: verdana, serif;
     font-size: 20px;
     font-weight: bold;
 }
@@ -40,10 +40,11 @@ input[type=submit] {
     font-weight: bold;
     text-transform: uppercase;
     background-color: darkseagreen;
-    color: #333;
+    color: #212121;
     margin: 4.5rem 0 4.5rem 2rem;
     padding: 1rem 1.5rem 1rem 1.5rem;
     border-radius: 50px;
+    cursor: pointer;
 }
 
 input[type=submit]:hover {
@@ -55,31 +56,68 @@ input[type=submit]:active {
 }
 
 p {
-    font-family: verdana, serif;
     font-size: 20px;
 }
 
+siteInfo {
+    font-size: 18px;
+    font-style: italic;
+    text-align: center;
+}
+
 h1 {
-    font-family: verdana, serif;
     font-size: 40px;
     font-weight: normal;
 }
 
-h2, h3 {
-    font-family: verdana, serif;
+h3 {
+    text-decoration: underline;
 }
 
 container {
-    background-color: red;
     display: inline-grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
 
 questionList {
-    background-color: #ffffff;
+    background-color: #424242;
+    border-radius: 10px;
     padding: 1rem;
     margin: 1rem;
     align-items: center;
     display: flex;
     flex-direction: column;
+}
+
+questionContainer {
+    background-color: #2d2d2d;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    border-radius: 10px;
+}
+
+questionSubInfo {
+    font-size: 15px;
+    font-style: italic;
+    color: silver;
+}
+
+a {
+    font-weight: bold;
+}
+
+a:link {
+  color: cornflowerblue;
+}
+
+a:visited {
+  color: mediumpurple;
+}
+
+a:active {
+  color: pink;
 }

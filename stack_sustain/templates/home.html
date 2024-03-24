@@ -1,12 +1,16 @@
 <!doctype html>
 <head>
     <title>StackSustain</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Stack<b>Sustain</b></h1>
-    <p>This site calculates your stack sustain score, a score which determines how active you have been in asking or answering questions, related to sustainability.</p>
-    <p>Tags related to sustainability are: {{g.tags}}</p>
+    <siteInfo>
+        This site calculates your stack sustain score, a score which determines how active you have been in asking or answering questions, related to sustainability.
+        <br>
+        The tags we use to determine your activity in sustainability-related topics are: {{g.tags}}
+    </siteInfo>
     <p><b>Fill in your display name for the different stack exchange sites in the text fields below.</b></p>
     <form method="post">
         <table>
@@ -26,11 +30,16 @@
         <input type="submit" value="Check score">
     </form>
     {% if g.user_id_so or g.user_id_su or g.user_id_sf %}
-    <h1>Youre current stack sustain score is: {{g.user_score}}!</h1>
-    <h1>Questions you asked</h1>
+        <h1>Your current Stack<b>Sustain</b> score is {{g.user_score}}!</h1>
+    <h2>Sustainability questions you asked</h2>
     <ol>
         {% for message in g.questions_so %}
-        <li><a href="{{message["link"]}}">{{ message["title"]}}</a></li>
+        <questionContainer>
+            <a href="{{message["link"]}}">{{ message["title"]}}</a>
+            <questionSubInfo>
+                Answered: {{ message["is_answered"] }}
+            </questionSubInfo>
+        </questionContainer>
         {% endfor %}
     </ol>
     {% else %}
@@ -44,21 +53,35 @@
         <questionList>
             <h3>Stack Overflow</h3>
             {% for question in get_sustainability_questions("stackoverflow") %}
-            <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+            <questionContainer>
+                <a href="{{question["link"]}}">{{ question["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ question["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
             {% endfor %}
         </questionList>
         <questionList>
             <h3>Super User</h3>
             {% for question in get_sustainability_questions("superuser") %}
-            <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+            <questionContainer>
+                <a href="{{question["link"]}}">{{ question["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ question["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
             {% endfor %}
         </questionList>
         <questionList>
             <h3>Server Fault</h3>
             {% for question in get_sustainability_questions("serverfault") %}
-            <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+            <questionContainer>
+                <a href="{{question["link"]}}">{{ question["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ question["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
             {% endfor %}
         </questionList>
     </container>
 </body>
-    </html>
