@@ -33,7 +33,28 @@
         <h1>Your current Stack<b>Sustain</b> score is {{g.user_score}}!</h1>
     <h2>Sustainability questions you asked</h2>
     <ol>
+        <h4>Stackoverflow</h4>
         {% for message in g.questions_so %}
+        <questionContainer>
+            <a href="{{message["link"]}}">{{ message["title"]}}</a>
+            <questionSubInfo>
+                Answered: {{ message["is_answered"] }}
+            </questionSubInfo>
+        </questionContainer>
+        {% endfor %}
+
+        <h4>SuperUser</h4>
+        {% for message in g.questions_su %}
+        <questionContainer>
+            <a href="{{message["link"]}}">{{ message["title"]}}</a>
+            <questionSubInfo>
+                Answered: {{ message["is_answered"] }}
+            </questionSubInfo>
+        </questionContainer>
+        {% endfor %}
+
+        <h4>ServerFault</h4>
+        {% for message in g.questions_sf %}
         <questionContainer>
             <a href="{{message["link"]}}">{{ message["title"]}}</a>
             <questionSubInfo>
@@ -52,7 +73,7 @@
     <container>
         <questionList>
             <h3>Stack Overflow</h3>
-            {% for question in get_sustainability_questions("stackoverflow") %}
+            {% for question in g.sus_questions_so %}
             <questionContainer>
                 <a href="{{question["link"]}}">{{ question["title"]}}</a>
                 <questionSubInfo>
@@ -63,7 +84,7 @@
         </questionList>
         <questionList>
             <h3>Super User</h3>
-            {% for question in get_sustainability_questions("superuser") %}
+            {% for question in g.sus_questions_su %}
             <questionContainer>
                 <a href="{{question["link"]}}">{{ question["title"]}}</a>
                 <questionSubInfo>
@@ -74,7 +95,7 @@
         </questionList>
         <questionList>
             <h3>Server Fault</h3>
-            {% for question in get_sustainability_questions("serverfault") %}
+            {% for question in g.sus_questions_sf %}
             <questionContainer>
                 <a href="{{question["link"]}}">{{ question["title"]}}</a>
                 <questionSubInfo>
