@@ -7,7 +7,9 @@ from flask import Flask, g, render_template, request
 from flask_caching import Cache
 
 sites = ["stackoverflow", "superuser", "serverfault"]
-tags = open("stack_sustain/tags.txt", "r").readlines()
+#tags = open("stack_sustain/tags.txt", "r").readlines()
+with open("stack_sustain/tags.txt") as f:
+    tags = f.read().splitlines()
 
 def create_app(test_config=None):
     # create and configure the app
@@ -57,7 +59,7 @@ def create_app(test_config=None):
             g.sus_questions_so = get_sustainability_questions("stackoverflow") 
             g.sus_questions_su = get_sustainability_questions("superuser") 
             g.sus_questions_sf = get_sustainability_questions("serverfault") 
-        g.tags = ','.join(tags)
+        g.tags = ', '.join(tags)
         return render_template('home.html')
     
     @cache.memoize(timeout=120) 
