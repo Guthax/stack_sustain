@@ -32,37 +32,50 @@
     {% if g.user_id_so or g.user_id_su or g.user_id_sf %}
         <h1>Your current Stack<b>Sustain</b> score is {{g.user_score}}!</h1>
     <h2>Sustainability questions you asked</h2>
-    <ol>
-        <h4>Stackoverflow</h4>
-        {% for message in g.questions_so %}
-        <questionContainer>
-            <a href="{{message["link"]}}">{{ message["title"]}}</a>
-            <questionSubInfo>
-                Answered: {{ message["is_answered"] }}
-            </questionSubInfo>
-        </questionContainer>
-        {% endfor %}
+    <container>
+        {% if g.questions_so %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.questions_so %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
 
-        <h4>SuperUser</h4>
-        {% for message in g.questions_su %}
-        <questionContainer>
-            <a href="{{message["link"]}}">{{ message["title"]}}</a>
-            <questionSubInfo>
-                Answered: {{ message["is_answered"] }}
-            </questionSubInfo>
-        </questionContainer>
-        {% endfor %}
+        {% if g.questions_su %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.questions_su %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
 
-        <h4>ServerFault</h4>
-        {% for message in g.questions_sf %}
-        <questionContainer>
-            <a href="{{message["link"]}}">{{ message["title"]}}</a>
-            <questionSubInfo>
-                Answered: {{ message["is_answered"] }}
-            </questionSubInfo>
-        </questionContainer>
-        {% endfor %}
-    </ol>
+        {% if g.questions_sf %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.questions_sf %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
+    </container>
+
     {% else %}
       <br/>
     {% endif %}

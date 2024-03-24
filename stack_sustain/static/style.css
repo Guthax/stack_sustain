@@ -13,7 +13,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    /*gap: 1rem;*/
     font-size: 20px;
 }
 
@@ -41,7 +41,7 @@ input[type=submit] {
     text-transform: uppercase;
     background-color: darkseagreen;
     color: #212121;
-    margin: 4.5rem 0 4.5rem 2rem;
+    margin: 6rem 0 6rem 2rem;
     padding: 1rem 1.5rem 1rem 1.5rem;
     border-radius: 50px;
     cursor: pointer;
@@ -59,15 +59,27 @@ p {
     font-size: 20px;
 }
 
+ol {
+    align-items: center;
+    text-align: center;
+}
+
 siteInfo {
     font-size: 18px;
     font-style: italic;
     text-align: center;
+    padding-bottom: 2rem;
+}
+
+table {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
 }
 
 h1 {
     font-size: 40px;
     font-weight: normal;
+    padding-bottom: 2rem;
 }
 
 h3 {
@@ -75,8 +87,9 @@ h3 {
 }
 
 container {
-    display: inline-grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display:grid;
+  grid-auto-columns:1fr;
+  grid-auto-flow:column;
 }
 
 questionList {
@@ -98,6 +111,7 @@ questionContainer {
     flex-direction: column;
     margin: 0.5rem;
     border-radius: 10px;
+    text-align: left;
 }
 
 questionSubInfo {
