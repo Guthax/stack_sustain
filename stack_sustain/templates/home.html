@@ -29,7 +29,18 @@
     <h1>Youre current stack sustain score is: {{g.user_score}}!</h1>
     <h1>Questions you asked</h1>
     <ol>
+        <h4>Stackoverflow</h4>
         {% for message in g.questions_so %}
+        <li><a href="{{message["link"]}}">{{ message["title"]}}</a></li>
+        {% endfor %}
+
+        <h4>SuperUser</h4>
+        {% for message in g.questions_su %}
+        <li><a href="{{message["link"]}}">{{ message["title"]}}</a></li>
+        {% endfor %}
+
+        <h4>ServerFault</h4>
+        {% for message in g.questions_sf %}
         <li><a href="{{message["link"]}}">{{ message["title"]}}</a></li>
         {% endfor %}
     </ol>
@@ -41,17 +52,17 @@
     <h1>Questions you might answer to boost your score</h1>
 
     <h2>Stack overflow:</h2>
-    {% for question in get_sustainability_questions("stackoverflow") %}
+    {% for question in g.sus_questions_so %}
     <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
     {% endfor %}
 
     <h2>SuperUser</h2>
-    {% for question in get_sustainability_questions("superuser") %}
+    {% for question in g.sus_questions_su  %}
     <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
     {% endfor %}
 
     <h2>Server fault</h2>
-    {% for question in get_sustainability_questions("serverfault") %}
+    {% for question in g.sus_questions_sf  %}
     <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
     {% endfor %}
 </body>
