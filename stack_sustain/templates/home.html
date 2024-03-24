@@ -1,10 +1,10 @@
 <!doctype html>
 <head>
-    <title>Stack sustain</title>
+    <title>StackSustain</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <p>Welcome to StackSustain! </p>
+    <h1>Stack<b>Sustain</b></h1>
     <p>This site calculates your stack sustain score, a score which determines how active you have been in asking or answering questions, related to sustainability.</p>
     <p>Tags related to sustainability are: {{g.tags}}</p>
     <p><b>Fill in your display name for the different stack exchange sites in the text fields below.</b></p>
@@ -38,21 +38,27 @@
     {% endif %}
 
 
-    <h1>Questions you might answer to boost your score</h1>
+    <h2>Recommended questions to boost your score</h2>
 
-    <h2>Stack overflow:</h2>
-    {% for question in get_sustainability_questions("stackoverflow") %}
-    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
-    {% endfor %}
-
-    <h2>SuperUser</h2>
-    {% for question in get_sustainability_questions("superuser") %}
-    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
-    {% endfor %}
-
-    <h2>Server fault</h2>
-    {% for question in get_sustainability_questions("serverfault") %}
-    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
-    {% endfor %}
+    <container>
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for question in get_sustainability_questions("stackoverflow") %}
+            <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+            {% endfor %}
+        </questionList>
+        <questionList>
+            <h3>Super User</h3>
+            {% for question in get_sustainability_questions("superuser") %}
+            <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+            {% endfor %}
+        </questionList>
+        <questionList>
+            <h3>Server Fault</h3>
+            {% for question in get_sustainability_questions("serverfault") %}
+            <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
+            {% endfor %}
+        </questionList>
+    </container>
 </body>
     </html>
