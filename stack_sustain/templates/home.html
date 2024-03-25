@@ -1,13 +1,17 @@
 <!doctype html>
 <head>
-    <title>Stack sustain</title>
+    <title>StackSustain</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <p>Welcome to StackSustain! </p>
-    <p>This site calculates your stack sustain score, a score which determines how active you have been in asking or answering questions, related to sustainability.</p>
-    <p>Tags related to sustainability are: {{g.tags}}</p>
-    <p><b>Fill in your display name for the different stack exchange sites in the text fields below.</b></p>
+    <h1>Stack<b>Sustain</b></h1>
+    <siteInfo>
+        This site calculates your Stack<b>Sustain</b> score, a score representing how active you've been in asking or answering questions about sustainability.
+        <br>
+        The tags we use to determine your activity in sustainability-related topics are: {{ g.tags }}
+    </siteInfo>
+    <p><b>Fill in your display name for the different stack exchange sites in the text fields below:</b></p>
     <form method="post">
         <table>
             <tr>
@@ -26,33 +30,92 @@
         <input type="submit" value="Check score">
     </form>
     {% if g.user_id_so or g.user_id_su or g.user_id_sf %}
-    <h1>Youre current stack sustain score is: {{g.user_score}}!</h1>
-    <h1>Questions you asked</h1>
-    <ol>
-        {% for message in g.questions_so %}
-        <li><a href="{{message["link"]}}">{{ message["title"]}}</a></li>
-        {% endfor %}
-    </ol>
+        <h1>Your current Stack<b>Sustain</b> score is {{g.user_score}}!</h1>
+    <h2>Sustainability questions you asked</h2>
+    <container>
+        {% if g.questions_so %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.questions_so %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
+
+        {% if g.questions_su %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.questions_su %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
+
+        {% if g.questions_sf %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.questions_sf %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
+    </container>
+
     {% else %}
       <br/>
     {% endif %}
 
 
-    <h1>Questions you might answer to boost your score</h1>
+    <h2>Recommended questions to boost your score</h2>
 
-    <h2>Stack overflow:</h2>
-    {% for question in get_sustainability_questions("stackoverflow") %}
-    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
-    {% endfor %}
-
-    <h2>SuperUser</h2>
-    {% for question in get_sustainability_questions("superuser") %}
-    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
-    {% endfor %}
-
-    <h2>Server fault</h2>
-    {% for question in get_sustainability_questions("serverfault") %}
-    <li><a href="{{question["link"]}}">{{ question["title"]}}</a></li>
-    {% endfor %}
+    <container>
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for question in g.sus_questions_so %}
+            <questionContainer>
+                <a href="{{question["link"]}}">{{ question["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ question["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        <questionList>
+            <h3>Super User</h3>
+            {% for question in g.sus_questions_su %}
+            <questionContainer>
+                <a href="{{question["link"]}}">{{ question["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ question["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        <questionList>
+            <h3>Server Fault</h3>
+            {% for question in g.sus_questions_sf %}
+            <questionContainer>
+                <a href="{{question["link"]}}">{{ question["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ question["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+    </container>
 </body>
-    </html>

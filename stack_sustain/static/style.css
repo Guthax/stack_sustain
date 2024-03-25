@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: verdana, serif;
+}
+
+body {
+    padding: 2rem;
+    background-color: #171717;
+    color: #ffeddb;
+    /*min-height: 100vh;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*gap: 1rem;*/
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+}
+
+label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+input {
+    font-size: 20px;
+    margin: 0.1rem 0.1rem 0.1rem 1rem;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    border-radius: 50px;
+    background-color: #424242;
+    color: whitesmoke;
+}
+
+input[type=submit] {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: darkseagreen;
+    color: #212121;
+    margin: 6rem 0 6rem 2rem;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #799f79;
+}
+
+input[type=submit]:active {
+    background-color: #698a69;
+}
+
+p {
+    font-size: 20px;
+}
+
+ol {
+    align-items: center;
+    text-align: center;
+}
+
+siteInfo {
+    font-size: 17px;
+    font-style: italic;
+    text-align: center;
+    padding-bottom: 2rem;
+}
+
+table {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: normal;
+    padding-bottom: 2rem;
+}
+
+h3 {
+    text-decoration: underline;
+}
+
+container {
+    display:grid;
+    grid-auto-columns:1fr;
+    grid-auto-flow:column;
+}
+
+questionList {
+    background-color: #424242;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+questionContainer {
+    background-color: #2d2d2d;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    border-radius: 10px;
+    text-align: left;
+}
+
+questionSubInfo {
+    font-size: 15px;
+    font-style: italic;
+    color: silver;
+}
+
+a {
+    font-weight: bold;
+}
+
+a:link {
+  color: cornflowerblue;
+}
+
+a:visited {
+  color: mediumpurple;
+}
+
+a:active {
+  color: pink;
+}
