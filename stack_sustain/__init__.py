@@ -32,6 +32,10 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    sus_questions_so = get_sustainability_questions("stackoverflow") 
+    sus_questions_su = get_sustainability_questions("superuser") 
+    sus_questions_sf = get_sustainability_questions("serverfault") 
     
 
     @app.route('/', methods=['GET', 'POST'])
@@ -42,9 +46,9 @@ def create_app(test_config=None):
             username_sf = request.form['username_sf']
 
             try:
-                g.user_id_so = get_stack_exhange_user_by_name(username_so, 'stackoverflow')
-                g.user_id_su = get_stack_exhange_user_by_name(username_sf, 'superuser')
-                g.user_id_sf = get_stack_exhange_user_by_name(username_su, 'serverfault')
+                g.user_id_so = username_so
+                g.user_id_su = username_su
+                g.user_id_sf = username_sf
 
                 g.questions_so = get_questions_by_user_id(g.user_id_so, 'stackoverflow') if g.user_id_so else []
                 g.questions_su = get_questions_by_user_id(g.user_id_su, 'superuser') if g.user_id_su else []
@@ -54,28 +58,23 @@ def create_app(test_config=None):
                 g.user_score = len(g.questions_so) + len(g.questions_su) + len(g.questions_sf)
             except IndexError:
                 print("User not found")
-        else:
-            print("hey")
-            g.sus_questions_so = get_sustainability_questions("stackoverflow") 
-            g.sus_questions_su = get_sustainability_questions("superuser") 
-            g.sus_questions_sf = get_sustainability_questions("serverfault") 
         g.tags = ', '.join(tags)
-        return render_template('home.html')
+        return render_template('home.html', so_questions = sus_questions_so, su_questions = sus_questions_su, sf_questions =sus_questions_sf)
     
-    @cache.memoize(timeout=120) 
-    def get_sustainability_questions(site: str):
-        questions = []
-        try:
-            for tag in tags:
-                questions_tag_site= get_sustainability_questions_by_tag(tag, site)
-                questions += questions_tag_site
-        except:
-            return []
-        return questions
+
     
     return app
 
-
+def get_sustainability_questions(site: str):
+    questions = []
+    try:
+        for tag in tags:
+            questions_tag_site= get_sustainability_questions_by_tag(tag, site)
+            questions += questions_tag_site
+    except:
+        return []
+    return questions
+    
 def get_sustainability_questions_by_tag(tag:str, site:str):
     r = requests.get(f"https://api.stackexchange.com//2.3/questions?order=desc&sort=activity&tagged={tag}&site={site}&key=g6OAYkAkdJGs5mF)Y5RanA((")
     data = r.json()
