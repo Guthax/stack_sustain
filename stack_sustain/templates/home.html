@@ -77,6 +77,51 @@
         {% endif %}
     </container>
 
+    <h2>Sustainability answers you gave</h2>
+    <container>
+        {% if g.answers_so %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.answers_so %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
+
+        {% if g.answers_su %}
+        <questionList>
+            <h3>Super user</h3>
+            {% for message in g.answers_su %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
+
+        {% if g.answers_sf %}
+        <questionList>
+            <h3>Stack Overflow</h3>
+            {% for message in g.answers_sf %}
+            <questionContainer>
+                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <questionSubInfo>
+                    Answered: {{ message["is_answered"] }}
+                </questionSubInfo>
+            </questionContainer>
+            {% endfor %}
+        </questionList>
+        {% endif %}
+    </container>
+
     {% else %}
       <br/>
     {% endif %}

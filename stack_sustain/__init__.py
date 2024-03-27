@@ -4,9 +4,8 @@ import requests
 
 from flask import Flask, g, render_template, request
 
-from flask_caching import Cache
 
-sites = ["stackoverflow", "superuser", "serverfault"]
+sites = ["stackoverflow", "superuser",  "serverfault"]
 #tags = open("stack_sustain/tags.txt", "r").readlines()
 with open("stack_sustain/tags.txt") as f:
     tags = f.read().splitlines()
@@ -14,7 +13,6 @@ with open("stack_sustain/tags.txt") as f:
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    cache = Cache(app, config={'CACHE_TYPE': 'simple'})
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
@@ -53,9 +51,15 @@ def create_app(test_config=None):
                 g.questions_so = get_questions_by_user_id(g.user_id_so, 'stackoverflow') if g.user_id_so else []
                 g.questions_su = get_questions_by_user_id(g.user_id_su, 'superuser') if g.user_id_su else []
                 g.questions_sf = get_questions_by_user_id(g.user_id_sf, 'serverfault') if g.user_id_sf else []
-                print(len(g.questions_so), len(g.questions_su), len(g.questions_sf ))
+
+                g.answers_so = get_questions_answered_by_user_id(g.user_id_so, 'stackoverflow') if g.user_id_so else []
+                g.answers_su = get_questions_answered_by_user_id(g.user_id_su, 'superuser') if g.user_id_su else []
+                g.answers_sf = get_questions_answered_by_user_id(g.user_id_sf, 'serverfault') if g.user_id_sf else []
+                len_questions = len( g.questions_so) + len(g.questions_su) + len(g.questions_sf)
+                len_answers = len( g.answers_so) + len(g.answers_su) + len(g.answers_sf)
+
                 #g.answers = get_answers_by_user_id(g.user_id)
-                g.user_score = len(g.questions_so) + len(g.questions_su) + len(g.questions_sf)
+                g.user_score = len_questions + len_answers
             except IndexError:
                 print("User not found")
         g.tags = ', '.join(tags)
@@ -66,6 +70,15 @@ def create_app(test_config=None):
     return app
 
 def get_sustainability_questions(site: str):
+    """
+    Gets all questions related to sustainability for a specific site.
+
+    args:
+        site (str): Site
+
+    returns:
+        list of questions.
+    """
     questions = []
     try:
         for tag in tags:
@@ -76,31 +89,91 @@ def get_sustainability_questions(site: str):
     return questions
     
 def get_sustainability_questions_by_tag(tag:str, site:str):
-    r = requests.get(f"https://api.stackexchange.com//2.3/questions?order=desc&sort=activity&tagged={tag}&site={site}&key=g6OAYkAkdJGs5mF)Y5RanA((")
+    """
+    Gets all questions which has a given tag.
+
+    args:
+        tag (str): Tag
+        site (str): Site
+
+    returns:
+        list of questions.
+    """
+    r = requests.get(f"https://api.stackexchange.com//2.3/questions?order=desc&sort=activity&tagged={tag}&site={site}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")
     data = r.json()
     questions = []
     try:
         for item in data["items"]:
             questions.append(item)
     except:
-        raise IndexError()
-    print(questions)    
+        raise IndexError() 
     return questions
 
 def get_questions_by_user_id(user_id: str, site:str):
-    r = requests.get(f"https://api.stackexchange.com/2.3/users/{user_id}/questions?order=desc&sort=activity&site={site}&key=g6OAYkAkdJGs5mF)Y5RanA((")
+    """
+    Gets all questions asked by a given user id on a site.
+
+    args:
+        user_id (str): User id
+        site (str): Site
+    
+    returns:
+        list of questions asked.
+    """
+    r = requests.get(f"https://api.stackexchange.com/2.3/users/{user_id}/questions?order=desc&sort=activity&site={site}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")
     data = r.json()
-    print(data)
+    questions = []
     try:
-        questions = data["items"]
+        for question in data["items"]:
+            if len([item for item in tags if item in question["tags"]]):
+                questions.append(question)
     except:
         questions =  []
     return questions
 
-def get_stack_exhange_user_by_name(display_name: str, site:str):
-    r = requests.get(f"https://api.stackexchange.com/2.3/users?site={site}&inname={display_name}&key=g6OAYkAkdJGs5mF)Y5RanA((")
+
+def get_question_by_question_ids(ids: list[str], site:str):
+    """
+    Gets all questions with the given list of ids.
+
+    args:
+        ids (list[str]): question ids.
+        site (str): Site
+    
+    returns:
+        list of questions asked.
+    """
+    ids = ';'.join(ids)
+    r = requests.get(f"https://api.stackexchange.com/2.3/questions/{ids}?order=desc&sort=activity&site={site}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")
     data = r.json()
-    print(data)
+    questions = []
+    try:
+        for question in data["items"]:
+            if len([item for item in tags if item in question["tags"]]):
+                questions.append(question)
+    except Exception as e:
+        print(e)
+        questions =  []
+    return questions
+    
+def get_questions_answered_by_user_id(user_id: str, site:str):
+    r = requests.get(f"https://api.stackexchange.com/2.3/users/{user_id}/answers?order=desc&sort=activity&site={site}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")
+    data = r.json()
+    result = []
+
+
+    try:
+        question_ids = []
+        for answer in data["items"]:
+                question_ids.append(str(answer["question_id"]))
+        result = get_question_by_question_ids(question_ids, site)
+    except:
+        result =  []
+    return result
+
+def get_stack_exhange_user_by_name(display_name: str, site:str):
+    r = requests.get(f"https://api.stackexchange.com/2.3/users?site={site}&inname={display_name}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")
+    data = r.json()
     try:
         # 5924096
         user_id = data['items'][0]['user_id']
