@@ -3,6 +3,7 @@
     <title>StackSustain</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
     <h1>Stack<b>Sustain</b></h1>
@@ -10,8 +11,13 @@
         This site calculates your Stack<b>Sustain</b> score, a score representing how active you've been in asking or answering questions about sustainability.
         <br>
         The tags we use to determine your activity in sustainability-related topics are: {{ g.tags }}
+        <br>
+        The StackSustain score is calculated as follows: # questions asked + # answers given + # accepted answers
     </siteInfo>
-    <p><b>Fill in your account id for the different stack exchange sites in the text fields below:</b></p>
+    <siteInfoToggle>
+        <p><i class="icon-info-sign"></i> <b>Fill in your account ID for the different stack exchange sites in the text fields below:</b></p>
+        <siteInfoTogglable>You can find your account ID in your profile URL: https://superuser.com/users/<b><u>[ACCOUNT ID]</u></b>/[display name]</siteInfoTogglable>
+    </siteInfoToggle>
     <form method="post">
         <table>
             <tr>
@@ -29,7 +35,7 @@
         </table>
         <input type="submit" value="Check score">
     </form>
-    <img src="static/url_bar.png"/>
+{#    <img src="static/url_bar.png"/>#}
     {% if g.user_id_so or g.user_id_su or g.user_id_sf %}
         <h1>Your current Stack<b>Sustain</b> score is {{g.user_score}}!</h1>
     <h2>Sustainability questions you asked</h2>
@@ -64,7 +70,7 @@
 
         {% if g.questions_sf %}
         <questionList>
-            <h3>Stack Overflow</h3>
+            <h3>Server Fault</h3>
             {% for message in g.questions_sf %}
             <questionContainer>
                 <a href="{{message["link"]}}">{{ message["title"]}}</a>
