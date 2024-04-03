@@ -58,8 +58,20 @@ def create_app(test_config=None):
                 len_questions = len( g.questions_so) + len(g.questions_su) + len(g.questions_sf)
                 len_answers = len( g.answers_so) + len(g.answers_su) + len(g.answers_sf)
 
+
+                def count_accepted(points_accepted, answers):   
+                    result = points_accepted
+                    for (_, accepted) in answers:
+                        if accepted:
+                            result += 1
+                    return result
+                points_accepted = count_accepted(0, g.answers_so)
+                points_accepted = count_accepted(points_accepted, g.answers_su)
+                points_accepted = count_accepted(points_accepted, g.answers_sf)
+
+
                 #g.answers = get_answers_by_user_id(g.user_id)
-                g.user_score = len_questions + len_answers
+                g.user_score = len_questions + len_answers + points_accepted
             except IndexError:
                 print("User not found")
         g.tags = ', '.join(tags)
@@ -132,44 +144,54 @@ def get_questions_by_user_id(user_id: str, site:str):
     return questions
 
 
-def get_question_by_question_ids(ids: list[str], site:str):
+def get_question_by_question_ids(answer_data, site: str):
     """
     Gets all questions with the given list of ids.
 
-    args:
-        ids (list[str]): question ids.
-        site (str): Site
-    
-    returns:
-        list of questions asked.
+    Args:
+        answers (list): List of tuples (answer_accepted, question_id).
+        site (str): Site.
+        tags (list): List of tags to filter questions.
+
+    Returns:
+        List of tuples (question, answer_accepted).
     """
-    ids = ';'.join(ids)
+    ids = ';'.join([str(question_id) for (question_id, _) in answer_data])
     r = requests.get(f"https://api.stackexchange.com/2.3/questions/{ids}?order=desc&sort=activity&site={site}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")
     data = r.json()
     questions = []
+    print("Answer data:", answer_data)
+    print(data["items"])
     try:
         for question in data["items"]:
-            if len([item for item in tags if item in question["tags"]]):
-                questions.append(question)
+            if any(tag in question["tags"] for tag in tags):
+                print("Yes@")
+                questions.append((question, [accepted for (question_id, accepted) in answer_data if question_id == question["question_id"]][0]))  # Initialize answer_accepted as None
     except Exception as e:
         print(e)
-        questions =  []
-    return questions
+        questions = []
     
-def get_questions_answered_by_user_id(user_id: str, site:str):
+    return questions
+
+def get_questions_answered_by_user_id(user_id: str, site: str):
     r = requests.get(f"https://api.stackexchange.com/2.3/users/{user_id}/answers?order=desc&sort=activity&site={site}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")
     data = r.json()
-    result = []
 
 
     try:
-        question_ids = []
+        answer_data = []
         for answer in data["items"]:
-                question_ids.append(str(answer["question_id"]))
-        result = get_question_by_question_ids(question_ids, site)
-    except:
-        result =  []
+            question_id = answer["question_id"]
+            accepted = answer["is_accepted"]
+            answer_data.append((question_id, accepted))
+
+        result = get_question_by_question_ids(answer_data, site)
+        print(result)
+    except Exception as e:
+        print(e)
+        result = []
     return result
+
 
 def get_stack_exhange_user_by_name(display_name: str, site:str):
     r = requests.get(f"https://api.stackexchange.com/2.3/users?site={site}&inname={display_name}&pagesize=100&key=g6OAYkAkdJGs5mF)Y5RanA((")

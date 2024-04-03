@@ -82,11 +82,11 @@
         {% if g.answers_so %}
         <questionList>
             <h3>Stack Overflow</h3>
-            {% for message in g.answers_so %}
+            {% for question_tuple in g.answers_so %}
             <questionContainer>
-                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <a href="{{question_tuple[0]["link"]}}">{{ question_tuple[0]["title"]}}</a>
                 <questionSubInfo>
-                    Answered: {{ message["is_answered"] }}
+                    Accepted: {{question_tuple[1] }}
                 </questionSubInfo>
             </questionContainer>
             {% endfor %}
@@ -96,11 +96,11 @@
         {% if g.answers_su %}
         <questionList>
             <h3>Super user</h3>
-            {% for message in g.answers_su %}
+            {% for question_tuple in g.answers_su %}
             <questionContainer>
-                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <a href="{{question_tuple[0]["link"]}}">{{ question_tuple[0]["title"]}}</a>
                 <questionSubInfo>
-                    Answered: {{ message["is_answered"] }}
+                    Accepted: {{ question_tuple[1]}}
                 </questionSubInfo>
             </questionContainer>
             {% endfor %}
@@ -109,12 +109,12 @@
 
         {% if g.answers_sf %}
         <questionList>
-            <h3>Stack Overflow</h3>
-            {% for message in g.answers_sf %}
+            <h3>Server Fault</h3>
+            {% for question_tuple in g.answers_sf %}
             <questionContainer>
-                <a href="{{message["link"]}}">{{ message["title"]}}</a>
+                <a href="{{question_tuple[0]["link"]}}">{{ question_tuple[0]["title"]}}</a>
                 <questionSubInfo>
-                    Answered: {{ message["is_answered"] }}
+                    Accepted: {{ question_tuple[1]}}
                 </questionSubInfo>
             </questionContainer>
             {% endfor %}
